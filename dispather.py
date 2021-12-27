@@ -1,10 +1,6 @@
 import os
 from glob import glob
 
-# umnovaolga15@gmail.com
-# https://community.nanoporetech.com/downloads
-# guppy_basecaller -i test -s guppy_results --flowcell FLO-MIN107 --kit SQK-RNA002
-# guppy_basecaller -i test -s guppy_results --flowcell FLO-MIN107 --kit SQK-RNA002 --device cuda:0
 
 path_to_source_dir = './source/'
 path_to_process_dir = './process/'
@@ -21,3 +17,8 @@ for file in files:
 
 # for tmp in tmp_dirs:
 #     print(tmp.split('_')[-1])
+
+# umnovaolga15@gmail.com
+# https://community.nanoporetech.com/downloads
+# guppy_basecaller -i test -s guppy_results --flowcell FLO-MIN107 --kit SQK-RNA002
+# guppy_basecaller -i test -s guppy_results --flowcell FLO-MIN107 --kit SQK-RNA002 --device cuda:0

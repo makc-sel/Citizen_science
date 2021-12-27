@@ -3,7 +3,18 @@ import random
 import socket
 import time
 from threading import Thread
+import os
 
+def task_exists():
+    pass
+def upload_experement():
+    pass
+def get_task():
+    pass
+def task_error():
+    pass
+def task_complete():
+    pass
 
 class ThreadedServer(Thread):
     def __init__(self, host, port, timeout=60, debug=logging.DEBUG):
@@ -51,14 +62,35 @@ class ThreadedServer(Thread):
                 data = client.recv(size).decode('ascii')
                 if data:
                     data = data.rstrip('\0')
-                    logging.debug(f'Data Received {client} {address} \nData:\n{data}')
+                    logging.debug(f'Data Received {address} \nData:\n{data}')
 
                     # TODO разработать обработку запросов
-                    time.sleep(random.random())
+                    if data == 'get_task':
+                        filename = f'backup{os.sep}FAP38488_8dd91b14_4.fast5'
+                        separator = '|'
+                        filesize = os.path.getsize(filename)
+                        if random.random()>0.5:
+                            client.send(f'{filename.split(os.sep)[-1]}{separator}{filesize}'.encode('ascii'))
+                            BUFFER_SIZE = 4096
+                            logging.debug(f'File send to {address}')
+                            with open(filename, "rb") as f:
+                                while True:
+                                    bytes_read = f.read(BUFFER_SIZE)
+                                    if not bytes_read:
+                                        break
+                                    client.sendall(bytes_read)
+                        else:
+                            client.send()
+                    elif data == 'task_error':
+                        pass
+                    elif data == 'task_complete':
+                        pass
+                    elif data == 'upload_experement':
+                        pass
+                    else:
+                        client.send(f'Unknown command {data}'.encode('ascii'))
 
-                    # send a response back to the client
-                    response = data
-                    client.send(response.encode('ascii'))
+                    client.close()
                 else:
                     raise error('CLIENT Disconnected')
             except:
@@ -68,4 +100,4 @@ class ThreadedServer(Thread):
 
 
 if __name__ == "__main__":
-    ThreadedServer('127.0.0.1', 8008, timeout=86400, debug=True).start()
+    ThreadedServer('172.31.64.13', 8008, timeout=86400, debug=True).start()
